@@ -9,26 +9,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="showGavle();">
     <div id="header">
         <span><h1>Weather at your fingertips!</h1></span>
     </div>
     <div id="wrapper">
-        <input placeholder="Insert city..." id="SearchBar" type="text">
+        <div id="gavleDiv"></div>
+        <input placeholder="Enter city..." id="SearchBar" type="text" onlclick="showWeather()">
     </div>
 
 
     <script>
-
-
-        getJSON('https://api.openweathermap.org/data/2.5/weather?q=Gavle&appid=ac9ae631e212116f1ae5ae8d3b2969ef',  function(err, data) {
-        if (err != null) {
-            console.error(err);
-        } else {
-            var text = data.coord.lon;
-            console.log(text);
+        function showGavle(){
+            fetch('https://api.openweathermap.org/data/2.5/forecast?q=Gavle&units=metric&appid=ac9ae631e212116f1ae5ae8d3b2969ef')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                let gavle = document.getElementById("gavleDiv")
+                //Plats
+                let tag = document.createElement("p")
+                let value = document.createTextNode(data.city.name)
+                tag.appendChild(value)
+                gavle.appendChild(tag)
+                //Temp
+                tag = document.createElement("p")
+                value = document.createTextNode(data.list[0].main.temp)
+                tag.appendChild(value)
+                gavle.appendChild(tag)
+                //Datum och tid
+                tag = document.createElement("p")
+                value = document.createTextNode(data.list[0].dt_txt)
+                tag.appendChild(value)
+                gavle.appendChild(tag)
+            });
         }
-        });   
+        // Get the input field
+        var input = document.getElementById("SearchBar");
+
+        // Execute a function when the user releases a key on the keyboard
+        input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            //event.preventDefault();
+            let txtCity = document.getElementById("SearchBar").value;
+            console.log(txtCity)
+        }
+        });
+        function showWeather(){
+
+
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
