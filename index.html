@@ -42,8 +42,31 @@
                 value = document.createTextNode(data.list[0].dt_txt)
                 tag.appendChild(value)
                 gavle.appendChild(tag)
+                //Add more details button
+                tag = document.createElement("button")  
+                tag.id = "moreDetails";
+                tag.innerHTML = "More details";
+                tag.addEventListener("click", function(event){
+                    tag.hidden = true;
+                    //rain
+                    tag = document.createElement("p")
+                    value = document.createTextNode("Rain past 3h: "+data.list[0].rain["3h"]+"mm")
+                    tag.appendChild(value)
+                    gavle.appendChild(tag)
+                    //Humidity
+                    tag = document.createElement("p")
+                    value = document.createTextNode("Humidity: "+data.list[0].main.humidity+"%")
+                    tag.appendChild(value)
+                    gavle.appendChild(tag)
+                    //Wind
+                    tag = document.createElement("p")
+                    value = document.createTextNode("Wind: "+data.list[0].wind.speed+" m/s")
+                    tag.appendChild(value)
+                    gavle.appendChild(tag)
+                })
+                gavle.appendChild(tag)          
             })
-                //Add event listener to the enter key.
+                //Add event listener to the enter key while on the searchbar.
                 var input = document.getElementById("SearchBar");
                 input.addEventListener("keyup", function(event) {
                 if (event.keyCode === 13) {
