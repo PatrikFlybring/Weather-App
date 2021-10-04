@@ -42,17 +42,13 @@
                 value = document.createTextNode(data.list[0].dt_txt)
                 tag.appendChild(value)
                 gavle.appendChild(tag)
-                //Add more details button
+                //Add more details button and eventlistener
                 tag = document.createElement("button")  
                 tag.id = "moreDetails";
                 tag.innerHTML = "More details";
+                gavle.appendChild(tag) 
                 tag.addEventListener("click", function(event){
                     tag.hidden = true;
-                    //rain
-                    tag = document.createElement("p")
-                    value = document.createTextNode("Rain past 3h: "+data.list[0].rain["3h"]+"mm")
-                    tag.appendChild(value)
-                    gavle.appendChild(tag)
                     //Humidity
                     tag = document.createElement("p")
                     value = document.createTextNode("Humidity: "+data.list[0].main.humidity+"%")
@@ -63,12 +59,18 @@
                     value = document.createTextNode("Wind: "+data.list[0].wind.speed+" m/s")
                     tag.appendChild(value)
                     gavle.appendChild(tag)
-                })
-                gavle.appendChild(tag)          
+                    //rain
+                    try {
+                        tag = document.createElement("p")
+                        value = document.createTextNode("Rain past 3h: "+data.list[0].rain['3h']+"mm")
+                        tag.appendChild(value)
+                        gavle.appendChild(tag)
+                    } catch (error) {}     
+                })        
             })
-                //Add event listener to the enter key while on the searchbar.
-                var input = document.getElementById("SearchBar");
-                input.addEventListener("keyup", function(event) {
+            //Add event listener to the enter key while on the searchbar.
+            var input = document.getElementById("SearchBar");
+            input.addEventListener("keyup", function(event) {
                 if (event.keyCode === 13) {
                     let txtCity = input.value;
                     search(txtCity);
@@ -88,11 +90,49 @@
                 let value = document.createTextNode(data.city.name)
                 tag.appendChild(value)
                 div.appendChild(tag)
-                //Temp
+                //Current temp
+                let smalldiv = document.createElement("div")
                 tag = document.createElement("p")
-                value = document.createTextNode(data.list[0].main.temp)
+                value = document.createTextNode("Now")
                 tag.appendChild(value)
-                div.appendChild(tag)
+                smalldiv.appendChild(tag)
+                tag = document.createElement("p")
+                value = document.createTextNode(data.list[0].main.temp+"\xB0")
+                tag.appendChild(value)
+                smalldiv.appendChild(tag)
+                tag = document.createElement("img") 
+                tag.src = "http://openweathermap.org/img/wn/"+data.list[0].weather[0].icon+"@2x.png"
+                tag.alt = data.list[0].weather[0].description
+                smalldiv.appendChild(tag)
+                tag = document.createElement("p")
+                tag.innerHTML = data.list[0].weather[0].description
+                smalldiv.appendChild(tag)
+                div.appendChild(smalldiv)
+                for (let index = 8; index <= 32; index+=8) {
+                    //every 24h data
+                    smalldiv = document.createElement("div")
+                    tag = document.createElement("p")
+                    value = document.createTextNode((index*3/24)+" days from now")
+                    tag.appendChild(value)
+                    smalldiv.appendChild(tag)
+                    tag = document.createElement("p")
+                    value = document.createTextNode(data.list[index].main.temp+"\xB0")
+                    tag.appendChild(value)
+                    smalldiv.appendChild(tag)
+                    tag = document.createElement("img") 
+                    tag.src = "http://openweathermap.org/img/wn/"+data.list[index].weather[0].icon+"@2x.png"
+                    tag.alt = data.list[index].weather[0].description
+                    smalldiv.appendChild(tag)
+                    tag = document.createElement("p")
+                    tag.innerHTML = data.list[index].weather[0].description
+                    smalldiv.appendChild(tag)
+                    div.appendChild(smalldiv)
+                }
+
+
+
+                // 0 8 16 24 32 39
+
             })
         }
     </script>
