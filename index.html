@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <script src="script.js"></script>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,128 +14,16 @@
         <span><h1>Weather at your fingertips!</h1></span>
     </div>
     <div id="wrapper">
-        <div id="gavleDiv"></div>
-        <div id ="searchDiv">
+        <div id ="sidebar">
+            <div id="gavleInfo"></div>
+            <div id="latestSearches"></div>
+        </div>
+        <div id ="mainbar">
             <input placeholder="Enter city..." id="SearchBar" type="text" onlclick="showWeather()">
             <div id="searchResults"></div>
         </div>
     </div>
-    <script>
-        function init(){
-            fetch('https://api.openweathermap.org/data/2.5/forecast?q=Gavle&units=metric&appid=ac9ae631e212116f1ae5ae8d3b2969ef')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                let gavle = document.getElementById("gavleDiv")
-                //Place
-                let tag = document.createElement("h5")
-                let value = document.createTextNode(data.city.name)
-                tag.appendChild(value)
-                gavle.appendChild(tag)
-                //Temp
-                tag = document.createElement("p")
-                value = document.createTextNode(data.list[0].main.temp+"\xB0")
-                tag.appendChild(value)
-                gavle.appendChild(tag)
-                //Date and time
-                tag = document.createElement("p")
-                value = document.createTextNode(data.list[0].dt_txt)
-                tag.appendChild(value)
-                gavle.appendChild(tag)
-                //Add more details button and eventlistener
-                tag = document.createElement("button")  
-                tag.id = "moreDetails";
-                tag.innerHTML = "More details";
-                gavle.appendChild(tag) 
-                tag.addEventListener("click", function(event){
-                    tag.hidden = true;
-                    //Humidity
-                    tag = document.createElement("p")
-                    value = document.createTextNode("Humidity: "+data.list[0].main.humidity+"%")
-                    tag.appendChild(value)
-                    gavle.appendChild(tag)
-                    //Wind
-                    tag = document.createElement("p")
-                    value = document.createTextNode("Wind: "+data.list[0].wind.speed+" m/s")
-                    tag.appendChild(value)
-                    gavle.appendChild(tag)
-                    //rain
-                    try {
-                        tag = document.createElement("p")
-                        value = document.createTextNode("Rain past 3h: "+data.list[0].rain['3h']+"mm")
-                        tag.appendChild(value)
-                        gavle.appendChild(tag)
-                    } catch (error) {}     
-                })        
-            })
-            //Add event listener to the enter key while on the searchbar.
-            var input = document.getElementById("SearchBar");
-            input.addEventListener("keyup", function(event) {
-                if (event.keyCode === 13) {
-                    let txtCity = input.value;
-                    search(txtCity);
-                }
-            })
-        }
-        function search(aCity){
-            console.log(aCity)
-            fetch('https://api.openweathermap.org/data/2.5/forecast?q='+ aCity +'&units=metric&appid=ac9ae631e212116f1ae5ae8d3b2969ef')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                let div = document.getElementById("searchResults")
-                div.innerHTML = '';
-                //Place
-                let tag = document.createElement("h5")
-                let value = document.createTextNode(data.city.name)
-                tag.appendChild(value)
-                div.appendChild(tag)
-                //Current temp
-                let smalldiv = document.createElement("div")
-                tag = document.createElement("p")
-                value = document.createTextNode("Now")
-                tag.appendChild(value)
-                smalldiv.appendChild(tag)
-                tag = document.createElement("p")
-                value = document.createTextNode(data.list[0].main.temp+"\xB0")
-                tag.appendChild(value)
-                smalldiv.appendChild(tag)
-                tag = document.createElement("img") 
-                tag.src = "http://openweathermap.org/img/wn/"+data.list[0].weather[0].icon+"@2x.png"
-                tag.alt = data.list[0].weather[0].description
-                smalldiv.appendChild(tag)
-                tag = document.createElement("p")
-                tag.innerHTML = data.list[0].weather[0].description
-                smalldiv.appendChild(tag)
-                div.appendChild(smalldiv)
-                for (let index = 8; index <= 32; index+=8) {
-                    //every 24h data
-                    smalldiv = document.createElement("div")
-                    tag = document.createElement("p")
-                    value = document.createTextNode((index*3/24)+" days from now")
-                    tag.appendChild(value)
-                    smalldiv.appendChild(tag)
-                    tag = document.createElement("p")
-                    value = document.createTextNode(data.list[index].main.temp+"\xB0")
-                    tag.appendChild(value)
-                    smalldiv.appendChild(tag)
-                    tag = document.createElement("img") 
-                    tag.src = "http://openweathermap.org/img/wn/"+data.list[index].weather[0].icon+"@2x.png"
-                    tag.alt = data.list[index].weather[0].description
-                    smalldiv.appendChild(tag)
-                    tag = document.createElement("p")
-                    tag.innerHTML = data.list[index].weather[0].description
-                    smalldiv.appendChild(tag)
-                    div.appendChild(smalldiv)
-                }
-
-
-
-                // 0 8 16 24 32 39
-
-            })
-        }
-    </script>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
 </html>

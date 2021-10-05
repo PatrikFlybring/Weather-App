@@ -24,16 +24,16 @@ body, html{
     display: block;
     margin: 10px auto 10px auto;
 }
-#searchDiv{
+#mainbar{
     flex: 0 0 80%;
     padding: 10px;
 }
-#gavleDiv{
+#sidebar{
     flex: 1;
     padding: 10px;
     border-right: 2px solid;
 }
-#gavleDiv p{
+#sidebar p{
 }
 #moreDetails{
     border-radius: 5px;
@@ -45,11 +45,21 @@ body, html{
     float:left;
     margin-right: 10px;
     margin-top: 10px;
-    border: 1px solid;
     border-radius: 5px;
     min-width: 175px;
 }
 #searchResults div p{
     padding: 5px;
     margin: 0;
+}
+#latestSearches{
+    margin-top: 30px;
+}
+#latestSearches a:hover{
+    color: grey;
+    cursor: pointer;
+}
+#myCanvas{
+    margin-top: 10px;
+    border: 1px solid;
 }
