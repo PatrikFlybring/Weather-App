@@ -3,6 +3,7 @@ function init(){
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=Gavle&units=metric&appid=ac9ae631e212116f1ae5ae8d3b2969ef')
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         //Filling the sidebar with elements
         let gavle = document.getElementById("gavleInfo")
         //Place
@@ -12,7 +13,7 @@ function init(){
         gavle.appendChild(tag)
         //Temp
         tag = document.createElement("p")
-        value = document.createTextNode(data.list[0].main.temp+"\xB0")
+        value = document.createTextNode(Math.round(data.list[0].main.temp)+"\xB0")
         tag.appendChild(value)
         gavle.appendChild(tag)
         //Date and time
@@ -43,7 +44,20 @@ function init(){
                 value = document.createTextNode("Rain past 3h: "+data.list[0].rain['3h']+"mm")
                 tag.appendChild(value)
                 gavle.appendChild(tag)
-            } catch (error) {}     
+            } catch (error) {} 
+            //5 day prognosis
+            for (let index = 8; index <= 32; index+=8) {
+                tag = document.createElement("P")
+                value = document.createTextNode(Math.round(data.list[index].main.temp)+"\xB0")
+                tag.appendChild(value)
+                if(index > 15){
+                    tag.appendChild(document.createTextNode(" "+(index*3/24)+" days from now"))
+                }
+                else{
+                    tag.appendChild(document.createTextNode(" Tomorrow"))
+                }
+                gavle.appendChild(tag)
+            }    
         })        
     })
 
@@ -74,7 +88,7 @@ function search(aCity){
         tag.appendChild(value)
         smalldiv.appendChild(tag)
         tag = document.createElement("p")
-        value = document.createTextNode(data.list[0].main.temp+"\xB0")
+        value = document.createTextNode(Math.round(data.list[0].main.temp)+"\xB0")
         tag.appendChild(value)
         smalldiv.appendChild(tag)
         tag = document.createElement("img") 
@@ -97,7 +111,7 @@ function search(aCity){
             tag.appendChild(value)
             smalldiv.appendChild(tag)
             tag = document.createElement("p")
-            value = document.createTextNode(data.list[index].main.temp+"\xB0")
+            value = document.createTextNode(Math.round(data.list[index].main.temp)+"\xB0")
             tag.appendChild(value)
             smalldiv.appendChild(tag)
             tag = document.createElement("img") 
@@ -136,7 +150,6 @@ function search(aCity){
     })
     .catch(err => {
         let div = document.getElementById("searchResults")
-        div.innerHTML = '';
         div.innerHTML = "- No city by that name -";
     })
     
