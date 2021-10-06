@@ -3,6 +3,7 @@ function init(){
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=Gavle&units=metric&appid=ac9ae631e212116f1ae5ae8d3b2969ef')
     .then(response => response.json())
     .then(data => {
+        //Filling the sidebar with elements
         let gavle = document.getElementById("gavleInfo")
         //Place
         let tag = document.createElement("h5")
@@ -45,6 +46,7 @@ function init(){
             } catch (error) {}     
         })        
     })
+
     //Add event listener to the enter key while on the searchbar.
     var input = document.getElementById("SearchBar");
     input.addEventListener("keyup", function(event) {
@@ -55,8 +57,6 @@ function init(){
     })
 }
 function search(aCity){
-    console.log(aCity)
-    setCookie("lastresult", aCity, 30)
     fetch('https://api.openweathermap.org/data/2.5/forecast?q='+ aCity +'&units=metric&appid=ac9ae631e212116f1ae5ae8d3b2969ef')
     .then(response => response.json())
     .then(data => {
@@ -113,7 +113,7 @@ function search(aCity){
         //Canvas element showing humidity
         smalldiv = document.createElement("div")
         tag = document.createElement("p")
-        value = document.createTextNode("Humidity(%)")
+        value = document.createTextNode("Humidity(%) past 5 days")
         tag.appendChild(value)
         smalldiv.appendChild(tag)
         tag = document.createElement("canvas")
@@ -130,8 +130,16 @@ function search(aCity){
             ctx.stroke();
             Xcounter += 10;
         }
-
+        //Saves input into a cookie and also prints it into the correct place
+        setCookie("lastresult", aCity, 30)
+        checkCookie();
     })
+    .catch(err => {
+        let div = document.getElementById("searchResults")
+        div.innerHTML = '';
+        div.innerHTML = "- No city by that name -";
+    })
+    
 }
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
@@ -159,6 +167,7 @@ function setCookie(cname, cvalue, exdays) {
     let result = getCookie("lastresult");
     if (result != "") {
         let div = document.getElementById("latestSearches")
+        div.innerHTML = "";
         let headline = document.createElement("h5")
         headline.innerHTML = "Last search";
         div.appendChild(headline)

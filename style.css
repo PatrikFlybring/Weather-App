@@ -2,6 +2,9 @@ body, html{
     background-color: rgb(223 226 233 / 66%);
     height: 100%;
 }
+#headerTitle{
+    text-decoration: none;
+}
 #header{
     background-image: url("/clouds.jpg");
     background-size: cover;
